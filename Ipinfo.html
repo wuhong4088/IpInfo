@@ -8,73 +8,93 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.6/platform.min.js" crossorigin="anonymous"></script>
-        <!-- Latest compiled and minified CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.6/platform.min.js"
+        crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    
+
     <script>
-    
+        function GetAjaxData(type, async, url, data) {
+            var _data = JSON.stringify(data);
+            return $.ajax({
+                type: type,
+                async: async,
+                url: url,
+                data: _data,
+                contentType: 'application/json; charset=UTF-8',
+                dataType: "json"
+            });
 
-
-        async function getIpClient() {
-            try {
-                const response = await axios.get('https://ipinfo.io/json');
-                //var info=`${response.data.ip} ${moment().format('MMMM Do YYYY, h:mm:ss a')}`;
-                var info = `${response.data.ip} ,${response.data.country} ,${response.data.city} ,${response.data.timezone}`
-                $('#ip').text(info);
-                console.log(response);
-
-                var date = moment().format('YYYY/MM/DD, h:mm:ss a')+`,GMT:${ moment().format('Z')}`;
-                $('#datetime').text(date);
-                $('#browser').text(platform.description);
-                //var platform = require('platform');
-                
-
-            } catch (error) {
-                console.error(error);
-            }
+        }
+        function getIpClient() {
+            var response = GetAjaxData('get', false, 'https://ipinfo.io/json', null);
+            var info = `${response.responseJSON.ip} ,${response.responseJSON.country} ,${response.responseJSON.city} ,${response.responseJSON.timezone}`
+            $('#Ip').val(info);
+        }
+        function GetDateTimeInfo() {
+            var date = moment().format('YYYY/MM/DD, h:mm:ss a') + `,GMT:${moment().format('Z')}`;
+            $('#datetime').val(date);
         }
 
+        function getBrowserInfo() {
+            $('#browser').val(platform.description);
+        }
 
-        getIpClient();
+        $(function () {
+            getIpClient();
+            GetDateTimeInfo();
+            getBrowserInfo();
+        });
+
+
 
 
     </script>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container container-fuild" style="padding-top: 10px;">
         <div class="form-horizontal">
-            <p>
-                <span><b>ip adress:</b></span>
-                <label id="ip"></label>
-            </p>
-            <p><span><b>DateTime:</b></span>
-                <label id="datetime">113</label>
-            </p>
 
-            <p>
-                <span><b>Borwser</b></span>
-                <label id="browser"></label>
-            </p>
+            <div class="panel panel-info">
+                <div class="panel-heading">Ip Info</div>
+                <div class="panel-body bg-warning">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Ip">Ip Address</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Ip" placeholder="Enter email"
+                                readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="datetime">Date Time</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="datetime" placeholder="datetime info"
+                                readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="browser">Browser</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="browser" placeholder="browser info"
+                                readonly="readonly">
+                        </div>
+                    </div>
+                </div>
 
 
 
 
 
 
+
+            </div>
 
 
         </div>
-
-
-    </div>
 </body>
 
 </html>
