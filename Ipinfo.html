@@ -31,11 +31,11 @@
         }
         function getIpClient() {
             var response = GetAjaxData('get', false, 'https://ipinfo.io/json', null);
-            var info = `${response.responseJSON.ip} ,${response.responseJSON.country} ,${response.responseJSON.city} ,${response.responseJSON.timezone}`
+            var info = response.responseJSON.ip + ' ,' + response.responseJSON.country + ' ,' + response.responseJSON.city + ' ,' + response.responseJSON.timezone;
             $('#Ip').val(info);
         }
         function GetDateTimeInfo() {
-            var date = moment().format('YYYY/MM/DD, h:mm:ss a') + `,GMT:${moment().format('Z')}`;
+            var date = moment().format('YYYY/MM/DD, h:mm:ss a') + ',GMT:'+moment().format('Z');
             $('#datetime').val(date);
         }
 
@@ -84,16 +84,7 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
-
-
-
             </div>
-
-
         </div>
 </body>
 
